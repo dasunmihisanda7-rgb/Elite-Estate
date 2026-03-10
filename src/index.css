@@ -1,43 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* iOS Liquid Glass Palette */
-  --bg-primary: #000000;
-  --bg-secondary: #1c1c1e;
+  /* macOS Dark Mode Palette */
+  --bg-primary: #1e1e1e;
+  --bg-secondary: rgba(30, 30, 30, 0.65);
 
   --accent-primary: #0a84ff;
-  /* Apple Blue */
   --accent-secondary: #bf5af2;
-  /* Apple Purple */
-  --accent-success: #30d158;
-  /* Apple Green */
+  --accent-success: #32d74b;
   --accent-warning: #ffd60a;
-  /* Apple Yellow */
   --accent-danger: #ff453a;
-  /* Apple Red */
 
-  --text-main: #ffffff;
-  --text-primary: rgba(255, 255, 255, 0.9);
-  --text-muted: rgba(255, 255, 255, 0.55);
+  --text-main: rgba(255, 255, 255, 0.85);
+  --text-primary: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.5);
 
-  /* iOS 26 Liquid Glass Variables */
-  --glass-bg: rgba(30, 30, 30, 0.45);
-  --glass-bg-hover: rgba(50, 50, 50, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-border-highlight: rgba(255, 255, 255, 0.2);
-  --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-  --glass-blur: blur(40px) saturate(180%);
+  /* macOS Vibrancy & Borders */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-highlight: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --glass-blur: blur(20px) saturate(150%);
 
   /* Apple-inspired fonts */
-  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-  --border-radius-sm: 10px;
-  --border-radius-md: 16px;
-  --border-radius-lg: 28px;
-  --border-radius-xl: 40px;
+  /* macOS native rounded corners */
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 10px;
+  --border-radius-xl: 12px;
 
-  --transition-fast: 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
-  --transition-smooth: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-fast: 0.15s ease;
+  --transition-smooth: 0.25s ease;
 }
 
 * {
@@ -56,11 +52,11 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 
-  /* Vibrant abstract background mimicking iOS wallpapers */
+  /* Abstract macOS-like Desktop Wallpaper */
   background-image:
-    radial-gradient(ellipse at 10% 20%, rgba(10, 132, 255, 0.2) 0%, transparent 40%),
-    radial-gradient(ellipse at 90% 80%, rgba(191, 90, 242, 0.2) 0%, transparent 40%),
-    radial-gradient(circle at 50% 10%, rgba(48, 209, 88, 0.1) 0%, transparent 30%);
+    radial-gradient(ellipse at 80% -10%, rgba(138, 43, 226, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at -10% 80%, rgba(10, 132, 255, 0.4) 0%, transparent 50%),
+    linear-gradient(135deg, #0d121c 0%, #000000 100%);
   background-attachment: fixed;
 }
 
@@ -83,8 +79,8 @@ h6 {
 }
 
 h1 {
-  font-size: 2.5rem;
-  letter-spacing: -0.04em;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
 }
 
 h2 {
@@ -113,17 +109,26 @@ button {
 /* Common Layout Containers */
 .app-container {
   display: flex;
-  width: 100%;
-  height: 100vh;
+  width: 90vw;
+  max-width: 1400px;
+  height: 85vh;
+  margin: auto;
+  margin-top: 7.5vh;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  position: relative;
 }
 
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
-  padding: 2.5rem;
+  padding: 2rem;
+  background: var(--bg-primary);
 }
 
 /* Liquid Glass Utilities */
@@ -147,94 +152,89 @@ button {
 
 /* Forms and Inputs */
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-main);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .form-input,
 .form-select {
   width: 100%;
-  padding: 0.85rem 1.2rem;
+  padding: 0.4rem 0.6rem;
   background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--border-radius-md);
-  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-primary);
   font-family: var(--font-family);
-  font-size: 1rem;
-  transition: all var(--transition-fast);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  font-size: 0.9rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .form-input:focus,
 .form-select:focus {
   outline: none;
   border-color: var(--accent-primary);
-  background-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.4);
 }
 
-/* Style the native dropdown options */
 .form-select option {
-  background-color: var(--bg-secondary);
-  color: var(--text-main);
-  padding: 10px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
-/* Buttons */
+/* macOS Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.85rem 1.5rem;
-  border-radius: var(--border-radius-md);
-  font-weight: 600;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0;
   transition: all var(--transition-fast);
-  font-size: 1rem;
-  letter-spacing: -0.01em;
+  border: 1px solid transparent;
 }
 
 .btn-primary {
   background: var(--accent-primary);
   color: #fff;
-  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.btn-primary:hover {
-  background: #148eff;
-  box-shadow: 0 6px 20px rgba(10, 132, 255, 0.5);
-  transform: translateY(-1px);
+.btn-primary:active {
+  background: #006ee6;
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-main);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
+.btn-secondary:active {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .btn-danger {
-  background: rgba(255, 69, 58, 0.15);
-  color: var(--accent-danger);
-  border: 1px solid rgba(255, 69, 58, 0.3);
+  background: var(--accent-danger);
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.btn-danger:hover {
-  background: rgba(255, 69, 58, 0.25);
+.btn-danger:active {
+  background: #e02f25;
 }
 
 /* Tables */
@@ -437,15 +437,18 @@ button {
   }
 
   /* Header adjustments */
-  header.glass-panel.header-container {
-    padding: 0.75rem 1rem !important;
+  header.mac-menu-bar {
+    padding: 0.5rem 1rem !important;
     margin-bottom: 1.5rem !important;
-    gap: 0.5rem;
     border-radius: var(--border-radius-md) !important;
   }
 
   .mobile-menu-btn {
     display: block !important;
+  }
+
+  .desktop-only {
+    display: none !important;
   }
 
   .search-bar {
