@@ -20,8 +20,7 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                     totalExpenses: 0,
                     totalRevenue: 0,
                     transactionCount: 0,
-                    lastActivity: tx.date,
-                    recentTransactions: []
+                    lastActivity: tx.date
                 };
             }
 
@@ -33,10 +32,6 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
             }
 
             projectGroups[pName].transactionCount += 1;
-
-            if (projectGroups[pName].recentTransactions.length < 2) {
-                projectGroups[pName].recentTransactions.push(tx);
-            }
 
             // Keep the most recent date
             if (new Date(tx.date) > new Date(projectGroups[pName].lastActivity)) {
@@ -147,7 +142,8 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                                         borderRadius: '10px',
                                         border: '1px solid #333',
                                         display: 'flex',
-                                        flexDirection: 'column'
+                                        flexDirection: 'column',
+                                        minHeight: '220px'
                                     }}
                                     onClick={() => onSelectProject(project.name)}
                                     onMouseOver={(e) => {
@@ -172,17 +168,18 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                                     </div>
 
                                     {/* Financial Bars */}
-                                    <div style={{ marginBottom: '1.5rem' }}>
-                                        <div className="flex-between" style={{ fontSize: '0.8rem', marginBottom: '0.5rem', fontWeight: 500 }}>
+                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: '1.5rem', marginTop: '1rem' }}>
+                                        <div className="flex-between" style={{ fontSize: '0.85rem', marginBottom: '0.75rem', fontWeight: 500 }}>
                                             <span style={{ color: '#888' }}>Rev: <span style={{ color: '#52c41a' }}>{formatCurrency(project.totalRevenue)}</span></span>
                                             <span style={{ color: '#888' }}>Exp: <span style={{ color: '#ff4d4f' }}>{formatCurrency(project.totalExpenses)}</span></span>
                                         </div>
-                                        <div style={{ height: '6px', background: '#444', borderRadius: '3px', display: 'flex', overflow: 'hidden' }}>
+                                        <div style={{ height: '8px', background: '#444', borderRadius: '4px', display: 'flex', overflow: 'hidden' }}>
                                             <div style={{ width: `${revPercent}%`, background: '#52c41a', transition: 'width 0.5s' }}></div>
                                             <div style={{ width: `${expPercent}%`, background: '#ff4d4f', transition: 'width 0.5s' }}></div>
                                         </div>
-                                        <div style={{ marginTop: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: '#fff' }}>
-                                            Net: <span style={{ color: netProfit >= 0 ? '#52c41a' : '#faad14' }}>{formatCurrency(netProfit)}</span>
+                                        <div style={{ marginTop: '1.25rem', padding: '0.75rem', background: 'rgba(0,0,0,0.2)', borderRadius: '6px', textAlign: 'center' }}>
+                                            <span style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Net Status</span>
+                                            <span style={{ fontSize: '1.2rem', fontWeight: 700, color: netProfit >= 0 ? '#52c41a' : '#faad14' }}>{formatCurrency(netProfit)}</span>
                                         </div>
                                     </div>
 
