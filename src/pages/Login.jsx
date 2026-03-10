@@ -6,7 +6,7 @@ const Login = ({ onLogin }) => {
     const [error, setError] = useState(false);
     const [isUnlocking, setIsUnlocking] = useState(false);
 
-    const CORRECT_PASSCODE = '2026'; // Hardcoded for demo purposes
+    const CORRECT_PASSCODE = '2005'; // Hardcoded for demo purposes
 
     const handleSubmit = (e) => {
         e.preventDefault();
