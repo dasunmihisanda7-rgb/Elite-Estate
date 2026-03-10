@@ -86,7 +86,7 @@ const Login = ({ onLogin }) => {
         `}
             </style>
 
-            <div className="glass-panel" style={{
+            <div className="glass-panel login-panel" style={{
                 width: '400px',
                 padding: '3rem 2rem',
                 display: 'flex',
@@ -138,7 +138,7 @@ const Login = ({ onLogin }) => {
                         ))}
                     </div>
 
-                    <div style={{
+                    <div className="pin-btn-grid" style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(3, 1fr)',
                         gap: '1rem',

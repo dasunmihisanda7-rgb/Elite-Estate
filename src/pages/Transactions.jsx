@@ -45,7 +45,7 @@ const Transactions = ({ transactions, addTransaction }) => {
         <div style={{ paddingBottom: '2rem' }}>
             <h1 className="mb-lg">Manage Transactions</h1>
 
-            <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+            <div className="transactions-grid" style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
                 {/* Form Column */}
                 <div className="glass-panel" style={{ flex: '1', minWidth: '300px' }}>
                     <div className="flex-between mb-md">

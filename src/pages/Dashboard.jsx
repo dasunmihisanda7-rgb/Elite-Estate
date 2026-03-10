@@ -122,7 +122,7 @@ const Dashboard = ({ transactions }) => {
             <h1 className="mb-lg">Financial Overview</h1>
 
             {/* Stats Row */}
-            <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+            <div className="dashboard-stats-grid" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
                 <StatCard
                     title="Total Revenue"
                     value={formatCurrency(stats.totalRevenue)}
@@ -152,7 +152,7 @@ const Dashboard = ({ transactions }) => {
             </div>
 
             {/* Charts Row */}
-            <div style={{ display: 'flex', gap: '1.5rem', height: '400px' }}>
+            <div className="dashboard-charts-grid" style={{ display: 'flex', gap: '1.5rem', height: '400px' }}>
                 <div className="glass-panel" style={{ flex: '2', display: 'flex', flexDirection: 'column' }}>
                     <h3 className="mb-md">Cash Flow Trends</h3>
                     <div style={{ flex: 1, minHeight: 0 }}>

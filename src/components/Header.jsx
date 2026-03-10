@@ -1,16 +1,21 @@
 import React from 'react';
-import { Bell, Search, User, Lock } from 'lucide-react';
+import { Bell, Search, User, Lock, Menu } from 'lucide-react';
 
-const Header = ({ onLogout }) => {
+const Header = ({ onLogout, onMenuClick }) => {
     return (
-        <header className="glass-panel flex-between" style={{ padding: '1rem 2rem', marginBottom: '2rem', borderRadius: 'var(--border-radius-lg)', borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}>
-            <div className="search-bar" style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', width: '300px' }}>
-                <Search size={18} color="var(--text-muted)" style={{ marginRight: '0.5rem' }} />
-                <input
-                    type="text"
-                    placeholder="Search transactions..."
-                    style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', outline: 'none', width: '100%', fontFamily: 'inherit' }}
-                />
+        <header className="glass-panel flex-between header-container" style={{ padding: '1rem 2rem', marginBottom: '2rem', borderRadius: 'var(--border-radius-lg)', borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <button className="btn btn-secondary mobile-menu-btn" onClick={onMenuClick} style={{ padding: '0.5rem', borderRadius: 'var(--border-radius-md)', display: 'none' }}>
+                    <Menu size={24} />
+                </button>
+                <div className="search-bar" style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', width: '300px' }}>
+                    <Search size={18} color="var(--text-muted)" style={{ marginRight: '0.5rem' }} />
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', outline: 'none', width: '100%', fontFamily: 'inherit' }}
+                    />
+                </div>
             </div>
 
             <div className="flex-center gap-md">
@@ -22,11 +27,11 @@ const Header = ({ onLogout }) => {
                 >
                     <Lock size={20} />
                 </button>
-                <div className="flex-center gap-sm" style={{ background: 'rgba(255,255,255,0.05)', padding: '0.25rem 1rem', paddingLeft: '0.25rem', borderRadius: '30px', cursor: 'pointer' }}>
-                    <div style={{ background: 'var(--accent-secondary)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="flex-center gap-sm user-profile-btn" style={{ background: 'rgba(255,255,255,0.05)', padding: '0.25rem 1rem', paddingLeft: '0.25rem', borderRadius: '30px', cursor: 'pointer' }}>
+                    <div style={{ background: 'var(--accent-secondary)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <User size={18} color="#fff" />
                     </div>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Partner Admin</span>
+                    <span className="user-name-text" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Partner Admin</span>
                 </div>
             </div>
         </header>

@@ -356,3 +356,128 @@ button {
 .text-right {
   text-align: right;
 }
+
+/* ------------------------------------- */
+/* Mobile Responsive Overrides */
+/* ------------------------------------- */
+
+@media (max-width: 900px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    padding: 1rem;
+    padding-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Sidebar transforms into off-canvas menu */
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -250px;
+    height: 100vh !important;
+    transition: left var(--transition-smooth) !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5) !important;
+    background: rgba(15, 15, 15, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 9999 !important;
+  }
+
+  .sidebar.open {
+    left: 0 !important;
+  }
+
+  .mobile-close-btn {
+    display: block !important;
+  }
+
+  /* Header adjustments */
+  header.glass-panel.header-container {
+    padding: 0.75rem 1rem !important;
+    margin-bottom: 1.5rem !important;
+    gap: 0.5rem;
+    border-radius: var(--border-radius-md) !important;
+  }
+
+  .mobile-menu-btn {
+    display: block !important;
+  }
+
+  .search-bar {
+    width: 150px !important;
+  }
+
+  /* Hide username text on mobile to save space */
+  .user-name-text {
+    display: none;
+  }
+
+  .user-profile-btn {
+    padding-right: 0.25rem !important;
+  }
+
+  /* Stack Dashboard Stat Cards */
+  .dashboard-stats-grid {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 1rem !important;
+  }
+
+  /* Stack Charts vertically */
+  .dashboard-charts-grid {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+
+  .dashboard-charts-grid>div {
+    height: 300px;
+    /* Give them fixed height when stacked */
+  }
+
+  /* Transactions layout */
+  .transactions-grid {
+    flex-direction: column !important;
+  }
+
+  .transactions-grid>div {
+    min-width: 100% !important;
+  }
+
+  /* Adjust typography for smaller screens */
+  h1 {
+    font-size: 2rem;
+  }
+
+  /* Make table scrollable */
+  .data-table-container {
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem;
+    width: calc(100% + 3rem);
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Adjust PIN Pad layout to fit small phones */
+  .login-panel {
+    width: 90vw !important;
+    padding: 2rem 1rem !important;
+  }
+
+  .pin-btn-grid {
+    gap: 0.5rem !important;
+  }
+
+  .pin-btn-grid button {
+    padding: 0.75rem !important;
+  }
+
+  .search-bar {
+    display: none !important;
+    /* Hide search bar completely on very small screens */
+  }
+}

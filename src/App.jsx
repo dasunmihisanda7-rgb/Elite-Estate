@@ -12,6 +12,7 @@ import Login from './pages/Login';
 function App() {
   const [transactions, setTransactions] = useState(mockTransactions);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const addTransaction = (newTx) => {
     setTransactions([{ ...newTx, id: Date.now() }, ...transactions]);
@@ -23,10 +24,21 @@ function App() {
 
   return (
     <Router>
+      <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      {/* Mobile backdrop overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="mobile-backdrop"
+          onClick={() => setIsMobileMenuOpen(false)}
+          style={{
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+            background: 'rgba(0,0,0,0.5)', zIndex: 998, backdropFilter: 'blur(5px)'
+          }}
+        />
+      )}
       <div className="app-container">
-        <Sidebar />
         <div className="main-content">
-          <Header onLogout={() => setIsAuthenticated(false)} />
+          <Header onLogout={() => setIsAuthenticated(false)} onMenuClick={() => setIsMobileMenuOpen(true)} />
           <Routes>
             <Route path="/" element={<Dashboard transactions={transactions} />} />
             <Route path="/transactions" element={<Transactions transactions={transactions} addTransaction={addTransaction} />} />
