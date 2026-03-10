@@ -202,12 +202,6 @@ const Dashboard = ({ transactions }) => {
                     icon={<Activity color={stats.netProfit >= 0 ? "var(--accent-success)" : "var(--accent-warning)"} />}
                     secondaryIconColor={stats.netProfit >= 0 ? "0, 255, 136" : "255, 183, 3"}
                 />
-                <StatCard
-                    title="Active Projects"
-                    value={stats.activeProjects}
-                    icon={<TrendingUp color="var(--accent-primary)" />}
-                    secondaryIconColor="0, 240, 255"
-                />
             </div>
 
             {/* Charts Row */}
