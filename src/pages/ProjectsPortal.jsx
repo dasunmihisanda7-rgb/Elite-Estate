@@ -55,7 +55,7 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
     };
 
     return (
-        <div style={{
+        <div className="portal-wrapper" style={{
             height: '100vh',
             width: '100vw',
             maxWidth: '100vw',
@@ -63,14 +63,13 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: '#1a1a1a', // Darker background for the entire view
+            background: '#1a1a1a', 
             position: 'absolute',
             top: 0,
             left: 0,
             zIndex: 50,
         }}>
-            {/* The main macOS Window for the portal */}
-            <div className="app-container" style={{ width: '80vw', maxWidth: '1000px', height: '70vh', flexDirection: 'column', background: '#222222', border: '1px solid #333', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', borderRadius: '8px', overflow: 'hidden' }}>
+            <div className="app-container portal-container" style={{ flexDirection: 'column', background: '#222222', border: '1px solid #333', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', borderRadius: '8px', overflow: 'hidden' }}>
 
                 {/* Traffic Lights / Header bar */}
                 <div style={{
@@ -79,7 +78,8 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '0 1rem',
-                    background: '#2a2a2a'
+                    background: '#2a2a2a',
+                    flexShrink: 0
                 }}>
                     <div style={{ display: 'flex', gap: '8px' }}>
                         <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ff5f56', border: '1px solid #e0443e' }}></div>
@@ -88,8 +88,8 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                     </div>
                 </div>
 
-                <div style={{ flex: 1, overflowY: 'auto', padding: '2.5rem 3rem' }}>
-                    <div className="flex-between" style={{ marginBottom: '2.5rem' }}>
+                <div className="portal-content" style={{ flex: 1, overflowY: 'auto' }}>
+                    <div className="flex-between portal-header" style={{ marginBottom: '2.5rem' }}>
                         <div>
                             <h1 style={{ marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.5rem', color: '#fff' }}>
                                 <FolderKanban size={24} color="#007aff" style={{ background: 'rgba(0, 122, 255, 0.2)', padding: '4px', borderRadius: '4px' }} /> Project Workspaces
@@ -98,11 +98,11 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                         </div>
 
                         {!isCreating ? (
-                            <button className="btn" onClick={() => setIsCreating(true)} style={{ background: '#007aff', color: '#fff', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.85rem', fontWeight: 500 }}>
+                            <button className="btn new-project-btn" onClick={() => setIsCreating(true)} style={{ background: '#007aff', color: '#fff', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.85rem', fontWeight: 500 }}>
                                 <Plus size={16} /> New Project
                             </button>
                         ) : (
-                            <form onSubmit={handleCreateProject} style={{ display: 'flex', gap: '0.5rem' }}>
+                            <form className="new-project-form" onSubmit={handleCreateProject} style={{ display: 'flex', gap: '0.5rem' }}>
                                 <input
                                     type="text"
                                     className="form-input"
@@ -118,11 +118,7 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                         )}
                     </div>
 
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-                        gap: '1.5rem'
-                    }}>
+                    <div className="projects-grid">
                         {projectsList.map((project, idx) => {
                             const netProfit = project.totalRevenue - project.totalExpenses;
 
@@ -134,6 +130,7 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                             return (
                                 <div
                                     key={idx}
+                                    className="project-card"
                                     style={{
                                         cursor: 'pointer',
                                         padding: '1.5rem',

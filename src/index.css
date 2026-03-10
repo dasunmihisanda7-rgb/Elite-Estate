@@ -131,6 +131,24 @@ button {
   background: var(--bg-primary);
 }
 
+/* Projects Portal specific */
+.portal-container {
+  width: 80vw;
+  max-width: 1000px;
+  height: 70vh;
+  margin-top: 0;
+}
+
+.portal-content {
+  padding: 2.5rem 3rem;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
 /* Liquid Glass Utilities */
 .glass-panel {
   background: var(--glass-bg);
@@ -405,6 +423,38 @@ button {
 @media (max-width: 900px) {
   .app-container {
     flex-direction: column;
+    width: 95vw;
+    height: 90vh;
+    margin-top: 5vh;
+  }
+
+  .portal-container {
+    width: 95vw;
+    height: 85vh;
+    margin-top: 0;
+  }
+
+  .portal-content {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .portal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .new-project-form {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .new-project-form input {
+    width: 100% !important;
   }
 
   .main-content {
@@ -508,6 +558,21 @@ button {
 }
 
 @media (max-width: 480px) {
+  .app-container {
+    width: 100vw;
+    height: 100vh;
+    margin-top: 0;
+    border-radius: 0;
+  }
+
+  .portal-container {
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr; /* Stack 1 card per row */
+  }
 
   /* Adjust PIN Pad layout to fit small phones */
   .login-panel {
