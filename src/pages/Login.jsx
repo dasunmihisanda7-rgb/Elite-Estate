@@ -8,20 +8,27 @@ const Login = ({ onLogin }) => {
 
     const CORRECT_PASSCODE = '2005'; // Hardcoded for demo purposes
 
-    const handleSubmit = (e) => {
-        if (e) e.preventDefault();
-        if (passcode === CORRECT_PASSCODE) {
+    const handleSubmit = (currentPasscode) => {
+        const codeToCheck = currentPasscode || passcode;
+        if (codeToCheck === CORRECT_PASSCODE) {
             setError(false);
             setIsUnlocking(true);
             setTimeout(() => {
                 onLogin();
-            }, 800); // Small delay for animation effect
+            }, 800);
         } else {
             setError(true);
             setPasscode('');
             setTimeout(() => setError(false), 2000);
         }
     };
+
+    // Auto-login when 4 digits are entered
+    useEffect(() => {
+        if (passcode.length === 4 && !isUnlocking) {
+            handleSubmit(passcode);
+        }
+    }, [passcode, isUnlocking]);
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -34,7 +41,7 @@ const Login = ({ onLogin }) => {
             } else if (e.key === 'Backspace') {
                 setPasscode(prev => prev.slice(0, -1));
             } else if (e.key === 'Enter' && passcode.length === 4) {
-                handleSubmit();
+                handleSubmit(passcode);
             }
         };
 
