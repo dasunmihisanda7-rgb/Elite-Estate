@@ -94,7 +94,10 @@ function App() {
       <div className="app-container">
         <div className="main-content">
           <Header
-            onLogout={() => setIsAuthenticated(false)}
+            onLogout={() => {
+              setIsAuthenticated(false);
+              setActiveProject(null);
+            }}
             onMenuClick={() => setIsMobileMenuOpen(true)}
             onBackToProjects={() => setActiveProject(null)}
             activeProject={activeProject}
