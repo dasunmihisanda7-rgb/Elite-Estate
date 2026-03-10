@@ -69,12 +69,56 @@ const Dashboard = ({ transactions }) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
     };
 
+    const { chartLabels, revenueData, expensesData, doughnutDataValues } = useMemo(() => {
+        let revenueByMonth = {};
+        let expensesByMonth = {};
+        let buyTotal = 0;
+        let buildTotal = 0;
+        let otherTotal = 0;
+
+        // Ensure transactions are sorted by date ascending for the line chart
+        const sortedDesc = [...transactions].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        sortedDesc.forEach(tx => {
+            // Doughnut chart (Expenses)
+            if (tx.type === 'buy') buyTotal += tx.amount;
+            else if (tx.type === 'build') buildTotal += tx.amount;
+            else if (tx.type !== 'sell') otherTotal += tx.amount;
+
+            // Line chart grouping
+            const date = new Date(tx.date);
+            const monthYear = isNaN(date.getTime()) ? 'Unknown' : `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
+
+            if (monthYear !== 'Unknown') {
+                if (!revenueByMonth[monthYear]) revenueByMonth[monthYear] = 0;
+                if (!expensesByMonth[monthYear]) expensesByMonth[monthYear] = 0;
+
+                if (tx.type === 'sell') {
+                    revenueByMonth[monthYear] += tx.amount;
+                } else {
+                    expensesByMonth[monthYear] += tx.amount;
+                }
+            }
+        });
+
+        const labels = Object.keys(revenueByMonth);
+        const rData = labels.map(m => revenueByMonth[m]);
+        const eData = labels.map(m => expensesByMonth[m]);
+
+        return {
+            chartLabels: labels.length > 0 ? labels : ['No Data'],
+            revenueData: labels.length > 0 ? rData : [0],
+            expensesData: labels.length > 0 ? eData : [0],
+            doughnutDataValues: [buyTotal, buildTotal, otherTotal]
+        };
+    }, [transactions]);
+
     const lineChartData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: chartLabels,
         datasets: [
             {
                 label: 'Revenue',
-                data: [0, 850000, 850000, 850000, 850000, 850000],
+                data: revenueData,
                 borderColor: '#00ff88',
                 backgroundColor: 'rgba(0, 255, 136, 0.1)',
                 tension: 0.4,
@@ -82,7 +126,7 @@ const Dashboard = ({ transactions }) => {
             },
             {
                 label: 'Expenses',
-                data: [320000, 620000, 1125000, 1125000, 1125000, 1125000],
+                data: expensesData,
                 borderColor: '#ff0055',
                 backgroundColor: 'rgba(255, 0, 85, 0.1)',
                 tension: 0.4,
@@ -106,7 +150,7 @@ const Dashboard = ({ transactions }) => {
     const doughNutData = {
         labels: ['Land Costs', 'Construction', 'Permits & Other'],
         datasets: [{
-            data: [770000, 420000, 55000],
+            data: doughnutDataValues,
             backgroundColor: [
                 '#00f0ff',
                 '#7b2cbf',
