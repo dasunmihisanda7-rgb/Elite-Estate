@@ -168,8 +168,8 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                                     </div>
 
                                     {/* Financial Bars */}
-                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: '1.5rem', marginTop: '1rem' }}>
-                                        <div className="flex-between" style={{ fontSize: '0.85rem', marginBottom: '0.75rem', fontWeight: 500 }}>
+                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: '2rem 0' }}>
+                                        <div className="flex-between" style={{ fontSize: '0.85rem', marginBottom: '1rem', fontWeight: 500 }}>
                                             <span style={{ color: '#888' }}>Rev: <span style={{ color: '#52c41a' }}>{formatCurrency(project.totalRevenue)}</span></span>
                                             <span style={{ color: '#888' }}>Exp: <span style={{ color: '#ff4d4f' }}>{formatCurrency(project.totalExpenses)}</span></span>
                                         </div>
@@ -177,9 +177,12 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                                             <div style={{ width: `${revPercent}%`, background: '#52c41a', transition: 'width 0.5s' }}></div>
                                             <div style={{ width: `${expPercent}%`, background: '#ff4d4f', transition: 'width 0.5s' }}></div>
                                         </div>
-                                        <div style={{ marginTop: '1.25rem', padding: '0.75rem', background: 'rgba(0,0,0,0.2)', borderRadius: '6px', textAlign: 'center' }}>
-                                            <span style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Net Status</span>
-                                            <span style={{ fontSize: '1.2rem', fontWeight: 700, color: netProfit >= 0 ? '#52c41a' : '#faad14' }}>{formatCurrency(netProfit)}</span>
+
+                                        <div className="flex-between" style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #333' }}>
+                                            <span style={{ fontSize: '1rem', color: '#fff', fontWeight: '500' }}>Net Status</span>
+                                            <span style={{ fontSize: '1.1rem', fontWeight: 600, color: netProfit >= 0 ? '#52c41a' : '#faad14' }}>
+                                                {netProfit < 0 ? '-' : ''}{formatCurrency(Math.abs(netProfit))}
+                                            </span>
                                         </div>
                                     </div>
 
