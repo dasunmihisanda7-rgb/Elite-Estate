@@ -8,8 +8,7 @@ const Login = ({ onLogin }) => {
 
     const CORRECT_PASSCODE = '2005'; // Hardcoded for demo purposes
 
-    const handleSubmit = (currentPasscode) => {
-        const codeToCheck = currentPasscode || passcode;
+    const processAutoLogin = (codeToCheck) => {
         if (codeToCheck === CORRECT_PASSCODE) {
             setError(false);
             setIsUnlocking(true);
@@ -23,50 +22,54 @@ const Login = ({ onLogin }) => {
         }
     };
 
-    // Auto-login when 4 digits are entered
+    const isProcessing = React.useRef(false);
+
+    // Auto-login safely when 4 digits are reached
     useEffect(() => {
-        if (passcode.length === 4 && !isUnlocking) {
-            handleSubmit(passcode);
+        if (passcode.length === 4 && !isUnlocking && !isProcessing.current) {
+            isProcessing.current = true;
+            processAutoLogin(passcode);
+        } else if (passcode.length < 4) {
+            isProcessing.current = false;
         }
     }, [passcode, isUnlocking]);
 
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if (isUnlocking) return;
+            if (isUnlocking || isProcessing.current) return;
 
             if (e.key >= '0' && e.key <= '9') {
-                if (passcode.length < 4 && !isUnlocking) {
-                    const newPasscode = passcode + e.key;
-                    setPasscode(newPasscode);
-                    if (newPasscode.length === 4) {
-                        handleSubmit(newPasscode);
-                    }
-                }
+                setPasscode(prev => {
+                    if (prev.length < 4) return prev + e.key;
+                    return prev;
+                });
             } else if (e.key === 'Backspace') {
-                if (!isUnlocking) setPasscode(prev => prev.slice(0, -1));
-            } else if (e.key === 'Enter' && passcode.length === 4) {
-                handleSubmit(passcode);
+                setPasscode(prev => prev.slice(0, -1));
+            } else if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent native form submit if an input were focused
             }
         };
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isUnlocking, passcode]);
+    }, [isUnlocking]);
 
     const handlePinClick = (num) => {
-        if (passcode.length < 4 && !isUnlocking) {
-            const newPasscode = passcode + num;
-            setPasscode(newPasscode);
-            if (newPasscode.length === 4) {
-                handleSubmit(newPasscode);
-            }
-        }
+        if (isUnlocking || isProcessing.current) return;
+        setPasscode(prev => {
+            if (prev.length < 4) return prev + num;
+            return prev;
+        });
     };
 
     const handleDelete = () => {
-        if (!isUnlocking) {
-            setPasscode(prev => prev.slice(0, -1));
-        }
+        if (isUnlocking || isProcessing.current) return;
+        setPasscode(prev => prev.slice(0, -1));
+    };
+
+    const handleFormSubmit = (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        // Submit is handled completely by the useEffect observer
     };
 
     return (
@@ -159,7 +162,7 @@ const Login = ({ onLogin }) => {
                     {isUnlocking ? 'Decrypting communications...' : 'Enter your 4-digit master passcode to continue'}
                 </p>
 
-                <form onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <form onSubmit={handleFormSubmit} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     {/* Custom PIN Display */}
                     <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
                         {[0, 1, 2, 3].map(index => (
