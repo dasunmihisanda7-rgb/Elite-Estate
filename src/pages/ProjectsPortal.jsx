@@ -9,7 +9,10 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
     const projectsList = useMemo(() => {
         const projectGroups = {};
 
-        transactions.forEach(tx => {
+        // Sort transactions descending by date first so we can easily grab the 'recent' ones
+        const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        sortedTransactions.forEach(tx => {
             const pName = tx.projectName || 'Default Ledger';
             if (!projectGroups[pName]) {
                 projectGroups[pName] = {
@@ -17,7 +20,8 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
                     totalExpenses: 0,
                     totalRevenue: 0,
                     transactionCount: 0,
-                    lastActivity: tx.date
+                    lastActivity: tx.date,
+                    recentTransactions: []
                 };
             }
 
@@ -29,6 +33,10 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
             }
 
             projectGroups[pName].transactionCount += 1;
+
+            if (projectGroups[pName].recentTransactions.length < 2) {
+                projectGroups[pName].recentTransactions.push(tx);
+            }
 
             // Keep the most recent date
             if (new Date(tx.date) > new Date(projectGroups[pName].lastActivity)) {
@@ -117,58 +125,90 @@ const ProjectsPortal = ({ transactions, onSelectProject }) => {
 
                     <div style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                        gap: '1.25rem'
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+                        gap: '1.5rem'
                     }}>
                         {projectsList.map((project, idx) => {
                             const netProfit = project.totalRevenue - project.totalExpenses;
+
+                            // Calculate bar widths
+                            const totalMoney = (project.totalRevenue + project.totalExpenses) || 1;
+                            const revPercent = (project.totalRevenue / totalMoney) * 100;
+                            const expPercent = (project.totalExpenses / totalMoney) * 100;
 
                             return (
                                 <div
                                     key={idx}
                                     style={{
                                         cursor: 'pointer',
-                                        padding: '1.25rem',
+                                        padding: '1.5rem',
                                         transition: 'all 0.2s',
                                         background: '#2a2a2a',
-                                        borderRadius: '8px',
-                                        border: '1px solid transparent'
+                                        borderRadius: '10px',
+                                        border: '1px solid #333',
+                                        display: 'flex',
+                                        flexDirection: 'column'
                                     }}
                                     onClick={() => onSelectProject(project.name)}
                                     onMouseOver={(e) => {
-                                        e.currentTarget.style.background = '#333333';
-                                        e.currentTarget.style.borderColor = '#444';
+                                        e.currentTarget.style.background = '#303030';
+                                        e.currentTarget.style.borderColor = '#007aff';
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
                                     }}
                                     onMouseOut={(e) => {
                                         e.currentTarget.style.background = '#2a2a2a';
-                                        e.currentTarget.style.borderColor = 'transparent';
+                                        e.currentTarget.style.borderColor = '#333';
+                                        e.currentTarget.style.transform = 'translateY(0)';
                                     }}
                                 >
-                                    <h3 style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem', color: '#fff' }}>
-                                        <Briefcase size={18} color="#b366ff" />
-                                        {project.name}
-                                    </h3>
+                                    <div className="flex-between" style={{ marginBottom: '1.5rem' }}>
+                                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.15rem', color: '#fff', margin: 0 }}>
+                                            <Briefcase size={20} color="#b366ff" />
+                                            {project.name}
+                                        </h3>
+                                        <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', background: netProfit >= 0 ? 'rgba(82, 196, 26, 0.15)' : 'rgba(250, 173, 20, 0.15)', color: netProfit >= 0 ? '#52c41a' : '#faad14', borderRadius: '12px', fontWeight: 600 }}>
+                                            {netProfit >= 0 ? '+ PROFITABLE' : 'AT LOSS'}
+                                        </span>
+                                    </div>
 
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.25rem' }}>
-                                        <div className="flex-between" style={{ fontSize: '0.8rem', color: '#888' }}>
-                                            <span>Expenses</span>
-                                            <span style={{ color: '#ff4d4f' }}>{formatCurrency(project.totalExpenses)}</span>
+                                    {/* Financial Bars */}
+                                    <div style={{ marginBottom: '1.5rem' }}>
+                                        <div className="flex-between" style={{ fontSize: '0.8rem', marginBottom: '0.5rem', fontWeight: 500 }}>
+                                            <span style={{ color: '#888' }}>Rev: <span style={{ color: '#52c41a' }}>{formatCurrency(project.totalRevenue)}</span></span>
+                                            <span style={{ color: '#888' }}>Exp: <span style={{ color: '#ff4d4f' }}>{formatCurrency(project.totalExpenses)}</span></span>
                                         </div>
-                                        <div className="flex-between" style={{ fontSize: '0.8rem', color: '#888' }}>
-                                            <span>Revenue</span>
-                                            <span style={{ color: '#52c41a' }}>{formatCurrency(project.totalRevenue)}</span>
+                                        <div style={{ height: '6px', background: '#444', borderRadius: '3px', display: 'flex', overflow: 'hidden' }}>
+                                            <div style={{ width: `${revPercent}%`, background: '#52c41a', transition: 'width 0.5s' }}></div>
+                                            <div style={{ width: `${expPercent}%`, background: '#ff4d4f', transition: 'width 0.5s' }}></div>
                                         </div>
-                                        <div className="flex-between" style={{ fontSize: '0.85rem', fontWeight: 600, borderTop: '1px solid #444', paddingTop: '0.5rem', marginTop: '0.25rem', color: '#fff' }}>
-                                            <span style={{ color: '#ddd' }}>Net Status</span>
-                                            <span style={{ color: netProfit >= 0 ? '#52c41a' : '#faad14' }}>
-                                                {formatCurrency(netProfit)}
-                                            </span>
+                                        <div style={{ marginTop: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: '#fff' }}>
+                                            Net: <span style={{ color: netProfit >= 0 ? '#52c41a' : '#faad14' }}>{formatCurrency(netProfit)}</span>
                                         </div>
                                     </div>
 
-                                    <div className="flex-between" style={{ fontSize: '0.7rem', color: '#666' }}>
-                                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><MapPin size={10} /> {project.transactionCount} transactions</span>
-                                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Calendar size={10} /> {project.lastActivity}</span>
+                                    {/* Recent Activity Mini-List */}
+                                    <div style={{ flex: 1, background: '#222', padding: '1rem', borderRadius: '6px', marginBottom: '1.5rem' }}>
+                                        <h4 style={{ fontSize: '0.75rem', color: '#666', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Recent Activity</h4>
+                                        {project.recentTransactions.length > 0 ? (
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                {project.recentTransactions.map(tx => (
+                                                    <div key={tx.id} className="flex-between" style={{ fontSize: '0.85rem' }}>
+                                                        <span style={{ color: '#ddd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px' }}>{tx.description}</span>
+                                                        <span style={{ color: tx.type === 'sell' ? '#52c41a' : '#ff4d4f', fontWeight: 500 }}>
+                                                            {tx.type === 'sell' ? '+' : '-'}{formatCurrency(tx.amount)}
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div style={{ fontSize: '0.8rem', color: '#666' }}>No recent activity.</div>
+                                        )}
+                                    </div>
+
+                                    {/* Footer */}
+                                    <div className="flex-between" style={{ fontSize: '0.75rem', color: '#666', marginTop: 'auto' }}>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><MapPin size={12} /> {project.transactionCount} entries</span>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><Calendar size={12} /> {project.lastActivity}</span>
                                     </div>
                                 </div>
                             );
