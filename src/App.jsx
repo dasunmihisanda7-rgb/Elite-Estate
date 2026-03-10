@@ -7,6 +7,8 @@ import Transactions from './pages/Transactions';
 import Reports from './pages/Reports';
 import { useState, useEffect } from 'react';
 import Login from './pages/Login';
+import { collection, getDocs, addDoc, orderBy, query } from 'firebase/firestore';
+import { db } from './firebase';
 
 function App() {
   const [transactions, setTransactions] = useState([]);
@@ -23,13 +25,15 @@ function App() {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('/api/transactions');
-      const data = await response.json();
-      if (data.message === 'success') {
-        setTransactions(data.data);
-      }
+      const q = query(collection(db, "transactions"), orderBy("date", "desc"));
+      const querySnapshot = await getDocs(q);
+      const fetchedTransactions = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setTransactions(fetchedTransactions);
     } catch (error) {
-      console.error("Error fetching transactions:", error);
+      console.error("Error fetching transactions from Firebase:", error);
     } finally {
       setIsLoading(false);
     }
@@ -37,19 +41,14 @@ function App() {
 
   const addTransaction = async (newTx) => {
     try {
-      const response = await fetch('/api/transactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTx)
-      });
-      const data = await response.json();
+      const docRef = await addDoc(collection(db, "transactions"), newTx);
 
-      if (data.message === 'success') {
-        // Prepend the successfully saved transaction
-        setTransactions([data.data, ...transactions]);
-      }
+      // Update local state immediately with the new Firebase document ID
+      const savedTx = { ...newTx, id: docRef.id };
+      setTransactions([savedTx, ...transactions]);
+
     } catch (error) {
-      console.error("Error saving transaction:", error);
+      console.error("Error saving transaction to Firebase:", error);
     }
   };
 
