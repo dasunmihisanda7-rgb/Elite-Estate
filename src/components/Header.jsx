@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, Wifi, Battery, Search, Command } from 'lucide-react';
 
-const Header = ({ onLogout, onMenuClick }) => {
+const Header = ({ onLogout, onMenuClick, onBackToProjects, activeProject }) => {
     const [time, setTime] = useState('');
 
     useEffect(() => {
@@ -41,9 +41,10 @@ const Header = ({ onLogout, onMenuClick }) => {
                     <Command size={18} />
                 </div>
 
-                <div style={{ fontWeight: 700, cursor: 'pointer' }}>Elite Partners</div>
-                <div className="menu-item desktop-only" style={{ cursor: 'pointer' }}>File</div>
-                <div className="menu-item desktop-only" style={{ cursor: 'pointer' }}>Edit</div>
+                <div style={{ fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {activeProject || 'Elite Partners'}
+                </div>
+                <div className="menu-item desktop-only" style={{ cursor: 'pointer' }} onClick={onBackToProjects}>Close Project</div>
                 <div className="menu-item desktop-only" style={{ cursor: 'pointer' }}>View</div>
                 <div className="menu-item desktop-only" style={{ cursor: 'pointer', color: 'var(--accent-danger)' }} onClick={onLogout}>Logout</div>
             </div>
