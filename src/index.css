@@ -365,6 +365,40 @@ button {
 }
 
 /* ------------------------------------- */
+/* Laptop / tablet landscape responsive Overrides */
+/* ------------------------------------- */
+
+@media (max-width: 1400px) {
+  .main-content {
+    padding: 1.5rem 2rem;
+  }
+
+  .glass-panel {
+    padding: 1.25rem;
+  }
+
+  h1 {
+    font-size: 2.15rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  .dashboard-charts-grid {
+    height: 350px;
+  }
+
+  .transactions-grid>div {
+    min-width: 250px;
+  }
+
+  .transactions-grid>div:last-child {
+    min-width: 350px;
+  }
+}
+
+/* ------------------------------------- */
 /* Mobile Responsive Overrides */
 /* ------------------------------------- */
 
