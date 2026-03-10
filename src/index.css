@@ -183,6 +183,13 @@ button {
   box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
 }
 
+/* Style the native dropdown options */
+.form-select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-main);
+  padding: 10px;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
