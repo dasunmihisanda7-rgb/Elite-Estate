@@ -431,10 +431,13 @@ button {
   .dashboard-charts-grid {
     flex-direction: column !important;
     height: auto !important;
+    display: flex !important;
   }
 
   .dashboard-charts-grid>div {
-    height: 300px;
+    flex: none !important;
+    height: 380px !important;
+    width: 100% !important;
     /* Give them fixed height when stacked */
   }
 
