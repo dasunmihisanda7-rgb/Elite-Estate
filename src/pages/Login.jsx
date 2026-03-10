@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Lock, Unlock, ArrowRight, ShieldCheck } from 'lucide-react';
 
 const Login = ({ onLogin }) => {
@@ -9,7 +9,7 @@ const Login = ({ onLogin }) => {
     const CORRECT_PASSCODE = '2005'; // Hardcoded for demo purposes
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         if (passcode === CORRECT_PASSCODE) {
             setError(false);
             setIsUnlocking(true);
@@ -22,6 +22,25 @@ const Login = ({ onLogin }) => {
             setTimeout(() => setError(false), 2000);
         }
     };
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (isUnlocking) return;
+
+            if (e.key >= '0' && e.key <= '9') {
+                if (passcode.length < 4) {
+                    setPasscode(prev => prev + e.key);
+                }
+            } else if (e.key === 'Backspace') {
+                setPasscode(prev => prev.slice(0, -1));
+            } else if (e.key === 'Enter' && passcode.length === 4) {
+                handleSubmit();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isUnlocking, passcode]);
 
     const handlePinClick = (num) => {
         if (passcode.length < 4) {
