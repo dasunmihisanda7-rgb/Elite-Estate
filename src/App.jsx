@@ -7,7 +7,7 @@ import Transactions from './pages/Transactions';
 import Reports from './pages/Reports';
 import { useState, useEffect } from 'react';
 import Login from './pages/Login';
-import { collection, getDocs, addDoc, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { db } from './firebase';
 
 function App() {
@@ -52,6 +52,15 @@ function App() {
     }
   };
 
+  const deleteTransaction = async (id) => {
+    try {
+      await deleteDoc(doc(db, "transactions", id));
+      setTransactions(transactions.filter(tx => tx.id !== id));
+    } catch (error) {
+      console.error("Error deleting transaction from Firebase:", error);
+    }
+  };
+
   if (!isAuthenticated) {
     return <Login onLogin={() => setIsAuthenticated(true)} />;
   }
@@ -80,8 +89,8 @@ function App() {
           ) : (
             <Routes>
               <Route path="/" element={<Dashboard transactions={transactions} />} />
-              <Route path="/transactions" element={<Transactions transactions={transactions} addTransaction={addTransaction} />} />
-              <Route path="/reports" element={<Reports transactions={transactions} />} />
+              <Route path="/transactions" element={<Transactions transactions={transactions} addTransaction={addTransaction} deleteTransaction={deleteTransaction} />} />
+              <Route path="/reports" element={<Reports transactions={transactions} deleteTransaction={deleteTransaction} />} />
             </Routes>
           )}
         </div>

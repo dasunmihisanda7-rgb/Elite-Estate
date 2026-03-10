@@ -67,7 +67,7 @@ const Dashboard = ({ transactions }) => {
     }, [transactions]);
 
     const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
+        return new Intl.NumberFormat('en-LK', { style: 'currency', currency: 'LKR', maximumFractionDigits: 0 }).format(amount);
     };
 
     const { chartLabels, revenueData, expensesData, doughnutDataValues } = useMemo(() => {

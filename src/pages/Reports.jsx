@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Filter, Download } from 'lucide-react';
+import { Filter, Download, Trash2 } from 'lucide-react';
 
-const Reports = ({ transactions }) => {
+const Reports = ({ transactions, deleteTransaction }) => {
     const [filter, setFilter] = useState('all');
 
     const filteredData = filter === 'all' ? transactions : transactions.filter(tx => tx.type === filter);
@@ -63,6 +63,7 @@ const Reports = ({ transactions }) => {
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th className="text-right">Amount</th>
+                                <th className="text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -80,13 +81,23 @@ const Reports = ({ transactions }) => {
                                         </div>
                                     </td>
                                     <td className="text-right" style={{ fontWeight: 600, color: tx.type === 'sell' ? 'var(--accent-success)' : 'inherit' }}>
-                                        {tx.type === 'sell' ? '+' : '-'}${tx.amount.toLocaleString()}
+                                        {tx.type === 'sell' ? '+' : '-'}LKR {tx.amount.toLocaleString()}
+                                    </td>
+                                    <td className="text-right">
+                                        <button
+                                            onClick={() => deleteTransaction(tx.id)}
+                                            className="btn"
+                                            style={{ padding: '0.5rem', color: 'var(--accent-danger)', background: 'rgba(255, 69, 58, 0.1)' }}
+                                            title="Delete Transaction"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
                             {filteredData.length === 0 && (
                                 <tr>
-                                    <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+                                    <td colSpan="6" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
                                         No transactions found for the selected filter.
                                     </td>
                                 </tr>

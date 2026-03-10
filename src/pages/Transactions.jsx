@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, CheckCircle2 } from 'lucide-react';
+import { Plus, CheckCircle2, Trash2 } from 'lucide-react';
 
-const Transactions = ({ transactions, addTransaction }) => {
+const Transactions = ({ transactions, addTransaction, deleteTransaction }) => {
     const [formData, setFormData] = useState({
         date: new Date().toISOString().split('T')[0],
         type: 'buy',
@@ -85,7 +85,7 @@ const Transactions = ({ transactions, addTransaction }) => {
 
                         <div style={{ display: 'flex', gap: '1rem' }}>
                             <div className="form-group" style={{ flex: 1 }}>
-                                <label className="form-label">Amount (USD)</label>
+                                <label className="form-label">Amount (LKR)</label>
                                 <input
                                     type="number"
                                     className="form-input"
@@ -142,8 +142,16 @@ const Transactions = ({ transactions, addTransaction }) => {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                                     <span className={`badge ${getBadgeClass(tx.type)}`}>{tx.type}</span>
                                     <span style={{ fontWeight: 600, color: tx.type === 'sell' ? 'var(--accent-success)' : 'var(--text-main)' }}>
-                                        {tx.type === 'sell' ? '+' : '-'}${tx.amount.toLocaleString()}
+                                        {tx.type === 'sell' ? '+' : '-'}LKR {tx.amount.toLocaleString()}
                                     </span>
+                                    <button
+                                        onClick={() => deleteTransaction(tx.id)}
+                                        className="btn"
+                                        style={{ padding: '0.5rem', color: 'var(--accent-danger)', background: 'rgba(255, 69, 58, 0.1)' }}
+                                        title="Delete Transaction"
+                                    >
+                                        <Trash2 size={16} />
+                                    </button>
                                 </div>
                             </div>
                         ))}
