@@ -3,28 +3,11 @@ import { Bell, Search, User, Lock, Menu } from 'lucide-react';
 
 const Header = ({ onLogout, onMenuClick }) => {
     return (
-        <header className="glass-panel flex-between header-container" style={{ padding: '1rem 2rem', marginBottom: '2rem', borderRadius: 'var(--border-radius-lg)', borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}>
+        <header className="header-container" style={{ padding: '1rem 2rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <button className="btn btn-secondary mobile-menu-btn" onClick={onMenuClick} style={{ padding: '0.5rem', borderRadius: 'var(--border-radius-md)', display: 'none' }}>
                     <Menu size={24} />
                 </button>
-            </div>
-
-            <div className="flex-center gap-md">
-                <button
-                    className="btn btn-secondary"
-                    style={{ padding: '0.5rem', borderRadius: '50%', background: 'rgba(255, 0, 85, 0.1)', color: 'var(--accent-danger)', borderColor: 'rgba(255, 0, 85, 0.3)' }}
-                    onClick={onLogout}
-                    title="Lock Session"
-                >
-                    <Lock size={20} />
-                </button>
-                <div className="flex-center gap-sm user-profile-btn" style={{ background: 'rgba(255,255,255,0.05)', padding: '0.25rem 1rem', paddingLeft: '0.25rem', borderRadius: '30px', cursor: 'pointer' }}>
-                    <div style={{ background: 'var(--accent-secondary)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <User size={18} color="#fff" />
-                    </div>
-                    <span className="user-name-text" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Partner Admin</span>
-                </div>
             </div>
         </header>
     );
