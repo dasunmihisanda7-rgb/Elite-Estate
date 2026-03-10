@@ -10,7 +10,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <div style={{ background: 'var(--accent-primary)', padding: '0.5rem', borderRadius: 'var(--border-radius-md)' }}>
             <Building2 size={24} color="#fff" />
           </div>
-          <h2 style={{ fontSize: '1.2rem', margin: 0 }}>Elite Estate</h2>
+          <h2 style={{ fontSize: '1.2rem', margin: 0 }}>Elite Partners</h2>
         </div>
         <button className="mobile-close-btn" onClick={onClose} style={{ display: 'none', color: 'var(--text-muted)' }}>
           <X size={24} />
@@ -59,7 +59,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       </nav>
 
       <div style={{ marginTop: 'auto', paddingTop: '2rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-        &copy; 2026 Elite Estate Partners
+        &copy; 2026 Elite Partners
       </div>
     </div>
   );
