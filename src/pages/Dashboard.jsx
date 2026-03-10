@@ -77,6 +77,15 @@ const Dashboard = ({ transactions }) => {
         let buildTotal = 0;
         let otherTotal = 0;
 
+        // Pre-fill the last 6 months so the chart always has a timeline baseline
+        const d = new Date();
+        for (let i = 5; i >= 0; i--) {
+            const pastDate = new Date(d.getFullYear(), d.getMonth() - i, 1);
+            const monthYear = `${pastDate.toLocaleString('default', { month: 'short' })} ${pastDate.getFullYear()}`;
+            revenueByMonth[monthYear] = 0;
+            expensesByMonth[monthYear] = 0;
+        }
+
         // Ensure transactions are sorted by date ascending for the line chart
         const sortedDesc = [...transactions].sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -104,14 +113,17 @@ const Dashboard = ({ transactions }) => {
             }
         });
 
-        const labels = Object.keys(revenueByMonth);
-        const rData = labels.map(m => revenueByMonth[m]);
-        const eData = labels.map(m => expensesByMonth[m]);
+        const sortedLabels = Object.keys(revenueByMonth).sort((a, b) => {
+            return new Date(a) - new Date(b);
+        });
+
+        const rData = sortedLabels.map(m => revenueByMonth[m]);
+        const eData = sortedLabels.map(m => expensesByMonth[m]);
 
         return {
-            chartLabels: labels.length > 0 ? labels : ['No Data'],
-            revenueData: labels.length > 0 ? rData : [0],
-            expensesData: labels.length > 0 ? eData : [0],
+            chartLabels: sortedLabels.length > 0 ? sortedLabels : ['No Data'],
+            revenueData: sortedLabels.length > 0 ? rData : [0],
+            expensesData: sortedLabels.length > 0 ? eData : [0],
             doughnutDataValues: [buyTotal, buildTotal, otherTotal]
         };
     }, [transactions]);
