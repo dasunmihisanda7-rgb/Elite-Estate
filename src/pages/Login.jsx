@@ -50,13 +50,19 @@ const Login = ({ onLogin }) => {
     }, [isUnlocking, passcode]);
 
     const handlePinClick = (num) => {
-        if (passcode.length < 4) {
-            setPasscode(prev => prev + num);
+        if (passcode.length < 4 && !isUnlocking) {
+            const newPasscode = passcode + num;
+            setPasscode(newPasscode);
+            if (newPasscode.length === 4) {
+                handleSubmit(newPasscode);
+            }
         }
     };
 
     const handleDelete = () => {
-        setPasscode(prev => prev.slice(0, -1));
+        if (!isUnlocking) {
+            setPasscode(prev => prev.slice(0, -1));
+        }
     };
 
     return (
