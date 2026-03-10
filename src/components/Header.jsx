@@ -8,14 +8,6 @@ const Header = ({ onLogout, onMenuClick }) => {
                 <button className="btn btn-secondary mobile-menu-btn" onClick={onMenuClick} style={{ padding: '0.5rem', borderRadius: 'var(--border-radius-md)', display: 'none' }}>
                     <Menu size={24} />
                 </button>
-                <div className="search-bar" style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', width: '300px' }}>
-                    <Search size={18} color="var(--text-muted)" style={{ marginRight: '0.5rem' }} />
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', outline: 'none', width: '100%', fontFamily: 'inherit' }}
-                    />
-                </div>
             </div>
 
             <div className="flex-center gap-md">
