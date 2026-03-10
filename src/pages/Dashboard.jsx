@@ -48,12 +48,13 @@ const Dashboard = ({ transactions }) => {
         let projCosts = {};
 
         transactions.forEach(tx => {
+            const amount = Number(tx.amount) || 0;
             if (tx.type === 'sell') {
-                revenue += tx.amount;
+                revenue += amount;
             } else {
-                expenses += tx.amount;
+                expenses += amount;
                 if (!projCosts[tx.description]) projCosts[tx.description] = 0;
-                projCosts[tx.description] += tx.amount;
+                projCosts[tx.description] += amount;
             }
         });
 
@@ -80,10 +81,12 @@ const Dashboard = ({ transactions }) => {
         const sortedDesc = [...transactions].sort((a, b) => new Date(a.date) - new Date(b.date));
 
         sortedDesc.forEach(tx => {
+            const amount = Number(tx.amount) || 0;
+
             // Doughnut chart (Expenses)
-            if (tx.type === 'buy') buyTotal += tx.amount;
-            else if (tx.type === 'build') buildTotal += tx.amount;
-            else if (tx.type !== 'sell') otherTotal += tx.amount;
+            if (tx.type === 'buy') buyTotal += amount;
+            else if (tx.type === 'build') buildTotal += amount;
+            else if (tx.type !== 'sell') otherTotal += amount;
 
             // Line chart grouping
             const date = new Date(tx.date);
@@ -94,9 +97,9 @@ const Dashboard = ({ transactions }) => {
                 if (!expensesByMonth[monthYear]) expensesByMonth[monthYear] = 0;
 
                 if (tx.type === 'sell') {
-                    revenueByMonth[monthYear] += tx.amount;
+                    revenueByMonth[monthYear] += amount;
                 } else {
-                    expensesByMonth[monthYear] += tx.amount;
+                    expensesByMonth[monthYear] += amount;
                 }
             }
         });
