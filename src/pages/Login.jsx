@@ -35,11 +35,15 @@ const Login = ({ onLogin }) => {
             if (isUnlocking) return;
 
             if (e.key >= '0' && e.key <= '9') {
-                if (passcode.length < 4) {
-                    setPasscode(prev => prev + e.key);
+                if (passcode.length < 4 && !isUnlocking) {
+                    const newPasscode = passcode + e.key;
+                    setPasscode(newPasscode);
+                    if (newPasscode.length === 4) {
+                        handleSubmit(newPasscode);
+                    }
                 }
             } else if (e.key === 'Backspace') {
-                setPasscode(prev => prev.slice(0, -1));
+                if (!isUnlocking) setPasscode(prev => prev.slice(0, -1));
             } else if (e.key === 'Enter' && passcode.length === 4) {
                 handleSubmit(passcode);
             }
