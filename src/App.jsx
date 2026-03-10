@@ -25,15 +25,19 @@ function App() {
 
   const fetchTransactions = async () => {
     try {
+      console.log("Attempting to fetch transactions from Firebase...");
       const q = query(collection(db, "transactions"), orderBy("date", "desc"));
       const querySnapshot = await getDocs(q);
+
+      console.log(`Successfully fetched ${querySnapshot.docs.length} documents from Firestore.`);
+
       const fetchedTransactions = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
       setTransactions(fetchedTransactions);
     } catch (error) {
-      console.error("Error fetching transactions from Firebase:", error);
+      console.error("Critical Firebase Error Details:", error.code, error.message, error);
     } finally {
       setIsLoading(false);
     }
